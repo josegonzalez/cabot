@@ -140,6 +140,9 @@ urlpatterns = patterns('',
 
      url(r'^admin/', include(admin.site.urls)),
 
+     # for serving static assets using django
+     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT,}),
+
      # for the password reset views
      url('^', include('django.contrib.auth.urls')),
 
