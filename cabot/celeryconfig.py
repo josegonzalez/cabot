@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 
-BROKER_URL = os.environ['CELERY_BROKER_URL']
+BROKER_URL = os.getenv('CELERY_BROKER_URL', os.getenv('REDIS_URL'))
 CELERY_IMPORTS = ('cabot.cabotapp.tasks', )
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 CELERY_TASK_SERIALIZER = "json"
