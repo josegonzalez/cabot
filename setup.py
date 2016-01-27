@@ -5,6 +5,10 @@ from os import environ as env
 # pull in active plugins
 plugins = env['CABOT_PLUGINS_ENABLED'].split(',') if 'CABOT_PLUGINS_ENABLED' in env else ["cabot_alert_hipchat", "cabot_alert_twilio", "cabot_alert_email"]
 
+distribute_requirements = []
+if not env.get('DYNO', None):
+    distribute_requirements = ['distribute==0.6.24']
+
 setup(
     name='cabot',
     version='0.0.1-dev',
@@ -25,7 +29,6 @@ setup(
         'argparse==1.2.1',
         'billiard==3.3.0.13',
         'celery==3.1.7',
-        'distribute==0.6.24',
         'dj-database-url==0.2.2',
         'django-appconf==0.6',
         'django-celery==3.1.1',
@@ -55,7 +58,7 @@ setup(
         'wsgiref==0.1.2',
         'python-dateutil==2.1',
         'django-auth-ldap==1.2.6',
-    ] + plugins,
+    ] + distribute_requirements + plugins,
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
