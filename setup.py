@@ -6,9 +6,11 @@ from os import path
 # pull in active plugins
 plugins = env['CABOT_PLUGINS_ENABLED'].split(',') if 'CABOT_PLUGINS_ENABLED' in env else ["cabot_alert_hipchat", "cabot_alert_twilio", "cabot_alert_email"]
 
-distribute_requirements = []
+other_requirements = plugins
 if not env.get('DYNO', None):
-    distribute_requirements = ['distribute==0.6.24']
+    other_requirements += ['distribute==0.6.24']
+if env.get('AUTH_LDAP', 'false').lower() == 'true':
+    other_requirements += ['django-auth-ldap==1.2.6']
 
 
 def open_file(fname):
@@ -25,7 +27,7 @@ setup(
     author_email='info@arachnys.com',
     url='http://cabotapp.com',
     license='MIT',
-    install_requires=open_file('requirements.txt').readlines() + distribute_requirements + plugins,
+    install_requires=open_file('requirements.txt').readlines() + other_requirements,
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
