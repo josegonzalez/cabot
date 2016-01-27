@@ -24,7 +24,7 @@ gevent==1.0.1
 hiredis==0.1.1
 httplib2==0.7.7
 icalendar==3.2
-kombu==3.0.8
+kombu==3.0.33
 mock==1.0.1
 psycogreen==1.0
 psycopg2==2.5.1
