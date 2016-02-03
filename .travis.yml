@@ -6,6 +6,10 @@ python:
 services:
  - redis-server
 
+env:
+ global:
+  - AUTH_LDAP=true
+
 # install deps
 install:
  - sudo apt-get update
