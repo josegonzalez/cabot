@@ -10,7 +10,10 @@ other_requirements = plugins
 if not env.get('DYNO', None):
     other_requirements += ['distribute==0.6.24']
 if env.get('AUTH_LDAP', 'false').lower() == 'true':
-    other_requirements += ['django-auth-ldap==1.2.6']
+    other_requirements += [
+        'django-auth-ldap==1.2.6',
+        'python-ldap==2.4.25',
+    ]
 
 
 def open_file(fname):
