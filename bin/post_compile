@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -x
 # Functions prefixed with 'heroku' only occur on buildpack-compatible platforms
 # such as Dokku or Heroku
 set -eo pipefail
@@ -6,6 +6,23 @@ set -eo pipefail
 
 NODE_VERSION=4.2.6
 NODE_PATH=".heroku/vendor/node-${NODE_VERSION}"
+
+if ! type cleanup > /dev/null; then
+    alias cleanup=/bin/cat
+fi
+
+if ! type log-output > /dev/null; then
+    alias log-output=/bin/cat
+fi
+
+if ! type indent > /dev/null; then
+    alias indent=/bin/cat
+fi
+
+if ! type put-step > /dev/null; then
+    alias put-step=/bin/echo
+fi
+
 
 heroku-install-package() {
   local package=$1
@@ -80,21 +97,23 @@ heroku-install-cabot-plugins() {
   done
 }
 
+heroku-put-scripts-on-path() {
+  # A better way of doing this perhaps?
+  ln -sf /app/.heroku/vendor/node-4.2.6/bin/* /app/.heroku/python/bin/
+}
+
 heroku-compress-assets() {
   puts-step "Compressing assets"
-  PATH=$PATH:/app/$NODE_PATH/bin .heroku/python/bin/python manage.py compress | indent
+  PATH=$PATH:/app/$NODE_PATH/bin .heroku/python/bin/python manage.py compress --force | indent
 }
 
 
 main() {
-  if [[ ! -n $DYNO ]]; then
-    return
-  fi
-
   heroku-install-nodejs
   heroku-install-less
   heroku-install-coffee-script
   heroku-install-cabot-plugins
+  heroku-put-scripts-on-path
   heroku-compress-assets
 }
 
