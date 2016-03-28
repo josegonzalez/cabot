@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/usr/bin/env bash
 # Functions prefixed with 'heroku' only occur on buildpack-compatible platforms
 # such as Dokku or Heroku
 set -eo pipefail
